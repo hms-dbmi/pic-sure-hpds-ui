@@ -1,11 +1,13 @@
 define(["common/searchParser", "backbone", "common/session", "login/login", 'header/header', 'footer/footer','user/userManagement',
         'role/roleManagement', 'privilege/privilegeManagement', "application/applicationManagement",
         'connection/connectionManagement', 'termsOfService/tos', "picSure/userFunctions",
-        'handlebars', 'psamaui/accessRule/accessRuleManagement', 'common/startup', 'overrides/router'],
+        'handlebars', 'psamaui/accessRule/accessRuleManagement', 'overrides/router', "filter/filterList",
+        "text!common/mainLayout.hbs", "picSure/queryBuilder", "output/outputPanel", "text!../settings/settings.json"],
         function(searchParser, Backbone, session, login, header, footer, userManagement,
                 roleManagement, privilegeManagement, applicationManagement,
                 connectionManagement, tos, userFunctions,
-                HBS, accessRuleManagement, startup, routerOverrides){
+                HBS, accessRuleManagement, routerOverrides, filterList,
+                 layoutTemplate, queryBuilder, output, settings){
         var Router = Backbone.Router.extend({
         routes: {
             "psamaui/userManagement(/)" : "displayUserManagement",
@@ -173,7 +175,14 @@ define(["common/searchParser", "backbone", "common/session", "login/login", 'hea
         },
         displayQueryBuilder: function() {
             $('#main-content').empty();
-            startup();
+            $('#main-content').append(HBS.compile(layoutTemplate)(JSON.parse(settings)));
+            filterList.init();
+            var outputPanel = output.View;
+            outputPanel.render();
+            $('#query-results').append(outputPanel.$el);
+
+            var query = queryBuilder.createQuery({});
+            outputPanel.update(query);
         }
 
 
