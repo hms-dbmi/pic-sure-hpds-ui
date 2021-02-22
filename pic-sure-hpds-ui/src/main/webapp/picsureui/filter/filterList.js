@@ -1,10 +1,11 @@
 define(["jquery", "output/outputPanel","picSure/queryBuilder", "filter/filter"],
 		function($, outputPanel, queryBuilder, filter){
 	var filterList = {
-		init : function(){
+		init : function(resourceUUID){
 			$('#filter-list').html();
 			this.filters = [];
 			this.addFilter();
+			this.resourceUUID = resourceUUID;
 		}
 	};
 	filterList.addFilter = function(){
@@ -42,7 +43,7 @@ define(["jquery", "output/outputPanel","picSure/queryBuilder", "filter/filter"],
 	}.bind(filterList);
 	filterList.runQuery = function(){
 		var query = queryBuilder.createQuery(
-				_.pluck(this.filters, "model"));
+				_.pluck(this.filters, "model"), this.resourceUUID);
 		outputPanel.View.update(query);
 		if(_.countBy(this.filters, function(filter){
 			return $(".search-box", filter.$el).is(":visible") ? "visible" : "hidden";

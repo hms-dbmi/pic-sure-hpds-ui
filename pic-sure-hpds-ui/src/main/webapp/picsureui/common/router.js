@@ -176,12 +176,12 @@ define(["common/searchParser", "backbone", "common/session", "login/login", 'hea
         displayQueryBuilder: function() {
             $('#main-content').empty();
             $('#main-content').append(HBS.compile(layoutTemplate)(JSON.parse(settings)));
-            filterList.init();
+            filterList.init(JSON.parse(settings).picSureResourceId);
             var outputPanel = output.View;
             outputPanel.render();
             $('#query-results').append(outputPanel.$el);
 
-            var query = queryBuilder.createQuery({});
+            var query = queryBuilder.createQuery({}, JSON.parse(settings).picSureResourceId);
             outputPanel.update(query);
         }
 
