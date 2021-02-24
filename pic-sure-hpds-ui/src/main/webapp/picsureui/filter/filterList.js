@@ -1,11 +1,12 @@
 define(["jquery", "output/outputPanel","picSure/queryBuilder", "filter/filter"],
 		function($, outputPanel, queryBuilder, filter){
 	var filterList = {
-		init : function(resourceUUID){
+		init : function(resourceUUID, renderHelpCallback){
 			$('#filter-list').html();
 			this.filters = [];
-			this.addFilter();
 			this.resourceUUID = resourceUUID;
+			this.renderHelpCallback = renderHelpCallback;
+			this.addFilter();
 		}
 	};
 	filterList.addFilter = function(){
@@ -14,6 +15,8 @@ define(["jquery", "output/outputPanel","picSure/queryBuilder", "filter/filter"],
 			queryCallback : this.runQuery,
 			model : new filter.Model(),
 			removeFilter : this.removeFilter,
+			resourceUUID: this.resourceUUID,
+			renderHelpCallback: this.renderHelpCallback
 		});
 		newFilter.render();
 		this.filters.push(newFilter);
